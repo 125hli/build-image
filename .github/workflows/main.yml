@@ -1,0 +1,37 @@
+name: Docker Build & Artifact Export
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Cache Docker layers
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+    - name: Build Docker image
+      run: |
+        docker build -t mzmoss/ejbca-certs:latest -f Dockerfile .
+    - name: Save Docker image to tar file
+      run: |
+        mkdir -p ./docker-artifact
+        docker save mzmoss/ejbca-certs:latest -o ./docker-artifact/mzmoss-ejbca-certs.tar
+    - name: Upload Docker image as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-image-tar
+        path: ./docker-artifact/mzmoss-ejbca-certs.tar
