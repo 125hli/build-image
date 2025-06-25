@@ -34,4 +34,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: docker-image-tar
-        path: ./docker-artifact/mzmoss-copy-files:debian-bookwrom-slim.tar
+        path: ./docker-artifact/mzmoss-copy-files-debian-bookwrom-slim.tar
