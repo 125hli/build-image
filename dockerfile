@@ -1,18 +1,20 @@
-FROM debian:bookworm-slim
+FROM alpine:3.18
 
-
-RUN apt-get update && \
-apt-get install -y --no-install-recommends \
+# 安装 bash, jq, ca-certificates, coreutils, findutils
+RUN apk add --no-cache \
     bash \
-    curl \
     jq \
-    tar \
-    gzip \
-    xz-utils \
-    openssl \
+    curl \
     ca-certificates \
-    tzdata \
-    && rm -rf /var/lib/apt/lists/*
+    coreutils \
+    findutils
+
+# 安装 Mike Farah 的 Go 版 yq
+RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
+    -o /usr/bin/yq && chmod +x /usr/bin/yq
 
 WORKDIR /work
+
+
 ENTRYPOINT ["/bin/bash"]
+
