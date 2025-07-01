@@ -25,13 +25,13 @@ jobs:
           ${{ runner.os }}-docker-
     - name: Build Docker image
       run: |
-        docker build -t mzmoss/iac-ansible-terraform:apline -f Dockerfile .
+        docker build -t mzmoss/ansible-terraform:apline -f Dockerfile .
     - name: Save Docker image to tar file
       run: |
         mkdir -p ./docker-artifact
-        docker save mzmoss/iac-ansible-terraform:apline -o ./docker-artifact/mzmoss-iac-ansible-terraform-apline.tar
+        docker save mzmoss/ansible-terraform:apline -o ./docker-artifact/mzmoss-ansible-terraform-apline.tar
     - name: Upload Docker image as artifact
       uses: actions/upload-artifact@v4
       with:
         name: docker-image-tar
-        path: ./docker-artifact/mzmoss-iac-ansible-terraform-apline.tar
+        path: ./docker-artifact/mzmoss-ansible-terraform-apline.tar
